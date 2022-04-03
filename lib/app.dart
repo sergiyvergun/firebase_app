@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sign_in_test_app/common/routes/route_generator.dart';
@@ -23,9 +24,19 @@ class App extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData.dark().copyWith(),
           onGenerateRoute: RouteGenerator.generateRoute,
-          initialRoute: Routes.signInSignUp,
+          home: StreamBuilder<User?>(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                // If the snapshot has user data, then they're already signed in. So Navigating to the Dashboard.
+                if (snapshot.hasData) {
+                  return const HomePage();
+                }
+                // Otherwise, they're not signed in. Show the sign in page.
+                return const SignUpSignInPage();
+              }),
         ),
-      ),
-    );
+        ),
+      );
+
   }
 }

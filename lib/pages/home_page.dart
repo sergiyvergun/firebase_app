@@ -38,21 +38,25 @@ class _HomePageState extends State<HomePage> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              const UserPicture(),
-              Container(width: 20),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(height: 20),
-                  Text(FirebaseAuth.instance.currentUser?.displayName??'Empty Name')
-                ],
-              ),
-            ],
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const UserPicture(),
+                Container(width: 20),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Container(height: 20),
+                    Text(FirebaseAuth.instance.currentUser?.displayName ??
+                        'Empty Name'),
+                    Container(height: 5),
+                    Text(FirebaseAuth.instance.currentUser!.email!),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -80,7 +84,11 @@ class _UserPictureState extends State<UserPicture> {
       decoration: const BoxDecoration(shape: BoxShape.circle),
       child: user.photoURL != null
           ? Image.network(user.photoURL!)
-          : Container( decoration: const BoxDecoration(shape: BoxShape.circle,color: Colors.grey,)),
+          : Container(
+              decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.grey,
+            )),
     );
   }
 }
