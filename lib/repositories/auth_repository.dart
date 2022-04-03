@@ -2,7 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepository {
-  final _firebaseAuth = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
+
+  User? get user => auth.currentUser;
+
+  Future<String?> get token =>
+      auth.currentUser?.getIdToken() ?? Future.value(null);
+
+  bool get isLoggedIn =>
+      auth.currentUser != null && auth.currentUser?.getIdToken() != null;
 
   Future<void> signUp({required String email, required String password}) async {
     try {
@@ -46,18 +54,16 @@ class AuthRepository {
           throw Exception(
               'This user has been disabled. Please contact support for help.');
         default:
-          throw Exception(
-              'An error occurred');
+          throw Exception('An error occurred');
       }
-    }catch(e){
-      throw Exception(
-          'An error occurred');
+    } catch (e) {
+      throw Exception('An error occurred');
     }
   }
 
   Future<void> signOut() async {
     try {
-      await _firebaseAuth.signOut();
+      await auth.signOut();
     } catch (e) {
       throw Exception(e);
     }

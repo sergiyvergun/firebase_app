@@ -100,7 +100,7 @@ class _SignUpSignInPageState extends State<SignUpSignInPage> {
                     controller: _emailTextEditingController),
                 const SizedBox(height: 10),
                 CustomTextFormField(
-                  obscureText: _isPasswordVisible,
+                  obscureText: !_isPasswordVisible,
                   labelText: 'Password',
                   validator: (String? password) {
                     return Validators.passwordValidator(password);
